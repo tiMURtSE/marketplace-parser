@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from consts import TIMEOUT
 from models.browser.Browser import Browser
+from utils.create_review import create_review
 
 class ProductPage(Browser):
 
@@ -26,7 +27,7 @@ class ProductPage(Browser):
 
             current_review_count = len(self.find_review_elements())
 
-            if review_count == current_review_count:
+            if review_count == current_review_count or current_review_count > 90:
                 break
 
     def _get_review_count(self):
@@ -55,7 +56,7 @@ class ProductPage(Browser):
         TITLE_CLASS = "pu4"
         CONTENT_CLASS = "u3p"
 
-        review = {}
+        review = create_review()
 
         for part in review_parts:
             part_title = part.find_elements(By.CLASS_NAME, TITLE_CLASS)

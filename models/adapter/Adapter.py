@@ -2,7 +2,7 @@ from models.excel.Excel import Excel
 
 class Adapter:
 
-    def __init__(self, adaptee: Excel, column_titles: list[str]):
+    def __init__(self, adaptee: Excel, column_titles: list[str] = []):
         self._adaptee = adaptee
         self._column_titles = column_titles
 
@@ -15,6 +15,16 @@ class Adapter:
             return products
         else:
             raise Exception("Количество столбцов и количество значений не совпадают")
+        
+    def write_data(self, columns: list[str], reviews: list):
+        data = self._adapt_reviews_to_data(reviews)
+
+        self._adaptee.write_data(columns, data)
+
+    def _adapt_reviews_to_data(self, reviews: list):
+        data = [list(review.values()) for review in reviews]
+
+        return data
 
     def _adapt_data_to_products(self, data: list):
         products = []
@@ -31,7 +41,3 @@ class Adapter:
     
     def _is_valid_column_titles(self, data: list):
         return len(data[0]) == len(self._column_titles)
-
-
-
-    
